@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/silver/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"banana-the-great.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="单周期CPU设计文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA_CO_P3_Document">
+<meta property="og:url" content="https://banana-the-great.github.io/2024/06/21/BUAA-CO-P3-Document/index.html">
+<meta property="og:site_name" content="BANANA-THE-GREAT">
+<meta property="og:description" content="单周期CPU设计文档">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-20T18:33:08.000Z">
+<meta property="article:modified_time" content="2024-06-20T18:41:44.128Z">
+<meta property="article:author" content="Mr.Banana">
+<meta property="article:tag" content="CO_P3">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://banana-the-great.github.io/2024/06/21/BUAA-CO-P3-Document/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://banana-the-great.github.io/2024/06/21/BUAA-CO-P3-Document/","path":"2024/06/21/BUAA-CO-P3-Document/","title":"BUAA_CO_P3_Document"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BUAA_CO_P3_Document | BANANA-THE-GREAT</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">BANANA-THE-GREAT</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Keep the joy train rolling today!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          博客概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">单周期CPU设计文档</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AE%BE%E8%AE%A1%E8%8D%89%E7%A8%BF"><span class="nav-number">1.1.</span> <span class="nav-text">1.设计草稿</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%8C%87%E4%BB%A4%E8%A7%A3%E6%9E%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.指令解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2.数据通路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E9%83%A8%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3.部件说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-IFU%EF%BC%88%E5%8F%96%E6%8C%87%E4%BB%A4%E5%8D%95%E5%85%83%EF%BC%89"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1.3.1.IFU（取指令单元）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1-1-PC%EF%BC%88%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%89"><span class="nav-number">1.1.3.1.1.</span> <span class="nav-text">1.3.1.1.PC（程序计数器）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1-2-NPC%EF%BC%88%E6%AC%A1%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97%E5%8D%95%E5%85%83%EF%BC%89"><span class="nav-number">1.1.3.1.2.</span> <span class="nav-text">1.3.1.2.NPC（次地址计算单元）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1-3-IM%EF%BC%88%E6%8C%87%E4%BB%A4%E5%AD%98%E5%82%A8%E5%99%A8%EF%BC%89"><span class="nav-number">1.1.3.1.3.</span> <span class="nav-text">1.3.1.3.IM（指令存储器）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-GRF%EF%BC%88%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8%E7%BB%84%EF%BC%89"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">1.3.2.GRF（通用寄存器组）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-ALU%EF%BC%88%E7%AE%97%E6%9C%AF%E9%80%BB%E8%BE%91%E5%8D%95%E5%85%83%EF%BC%89"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">1.3.3.ALU（算术逻辑单元）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-DM%EF%BC%88%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%99%A8%EF%BC%89"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">1.3.4.DM（数据存储器）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-5-EXT%EF%BC%88%E6%89%A9%E5%B1%95%E5%8D%95%E5%85%83%EF%BC%89"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">1.3.5.EXT（扩展单元）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-6-Controller%EF%BC%88%E6%8E%A7%E5%88%B6%E5%99%A8%EF%BC%89"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">1.3.6.Controller（控制器）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-6-1-AND-logic%EF%BC%88%E4%B8%8E%E9%80%BB%E8%BE%91%EF%BC%8C%E8%AF%86%E5%88%AB%EF%BC%89"><span class="nav-number">1.1.3.6.1.</span> <span class="nav-text">1.3.6.1.AND_logic（与逻辑，识别）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-6-2-OR-logic%EF%BC%88%E6%88%96%E9%80%BB%E8%BE%91%EF%BC%8C%E7%94%9F%E6%88%90%EF%BC%89"><span class="nav-number">1.1.3.6.2.</span> <span class="nav-text">1.3.6.2.OR_logic（或逻辑，生成）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#OR-logic%E7%9C%9F%E5%80%BC%E8%A1%A8-%E6%9C%AC%E8%A1%A8%E4%BB%85%E6%B6%89%E5%8F%8A%E6%9C%89%E5%A4%9A%E7%A7%8D%E5%8F%AF%E8%83%BD%E7%9A%84%E4%BF%A1%E5%8F%B7%E3%80%82"><span class="nav-number">1.1.3.6.2.1.</span> <span class="nav-text">OR_logic真值表(本表仅涉及有多种可能的信号。)</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.</span> <span class="nav-text">2.测试方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%9D%E8%80%83%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">3.思考题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mr.Banana"
+      src="/images/ling.jpg">
+  <p class="site-author-name" itemprop="name">Mr.Banana</p>
+  <div class="site-description" itemprop="description">Do you want a watermelon?</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BANANA-THE-GREAT" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BANANA-THE-GREAT" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          推荐博客
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://thysrael.github.io/" title="https:&#x2F;&#x2F;thysrael.github.io&#x2F;" rel="noopener" target="_blank">钟鼓楼</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://banana-the-great.github.io/2024/06/21/BUAA-CO-P3-Document/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ling.jpg">
+      <meta itemprop="name" content="Mr.Banana">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BANANA-THE-GREAT">
+      <meta itemprop="description" content="Do you want a watermelon?">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BUAA_CO_P3_Document | BANANA-THE-GREAT">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUAA_CO_P3_Document
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-06-21 02:33:08 / 修改时间：02:41:44" itemprop="dateCreated datePublished" datetime="2024-06-21T02:33:08+08:00">2024-06-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/BUAA-CO/" itemprop="url" rel="index"><span itemprop="name">BUAA_CO</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="单周期CPU设计文档"><a href="#单周期CPU设计文档" class="headerlink" title="单周期CPU设计文档"></a>单周期CPU设计文档</h1><span id="more"></span>
+
+<h2 id="1-设计草稿"><a href="#1-设计草稿" class="headerlink" title="1.设计草稿"></a>1.设计草稿</h2><h3 id="1-1-指令解析"><a href="#1-1-指令解析" class="headerlink" title="1.1.指令解析"></a>1.1.指令解析</h3><table>
+<thead>
+<tr>
+<th align="center">instructions</th>
+<th align="center">[31,26]</th>
+<th align="center">[25,21]</th>
+<th align="center">[20,16]</th>
+<th align="center">[15,11]</th>
+<th align="center">[10,6]</th>
+<th align="center">[5,0]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">000000</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">rd</td>
+<td align="center">00000</td>
+<td align="center">100000</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">000000</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">rd</td>
+<td align="center">00000</td>
+<td align="center">100010</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">001101</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">immediate[15,11]</td>
+<td align="center">immediate[10,6]</td>
+<td align="center">immediate[5,0]</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">100011</td>
+<td align="center">base</td>
+<td align="center">rt</td>
+<td align="center">offset[15,11]</td>
+<td align="center">offset[10,6]</td>
+<td align="center">offset[5,0]</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">101011</td>
+<td align="center">base</td>
+<td align="center">rt</td>
+<td align="center">offset[15,11]</td>
+<td align="center">offset[10,6]</td>
+<td align="center">offset[5,0]</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">000100</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">offset[15,11]</td>
+<td align="center">offset[10,6]</td>
+<td align="center">offset[5,0]</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">001111</td>
+<td align="center">00000</td>
+<td align="center">rt</td>
+<td align="center">immediate[15,11]</td>
+<td align="center">immediate[10,6]</td>
+<td align="center">immediate[5,0]</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">000000</td>
+<td align="center">00000</td>
+<td align="center">00000</td>
+<td align="center">00000</td>
+<td align="center">00000</td>
+<td align="center">000000</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-数据通路"><a href="#1-2-数据通路" class="headerlink" title="1.2.数据通路"></a>1.2.数据通路</h3><table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">IFU_branch</th>
+<th align="center">IFU_jump</th>
+<th align="center">IFU_offset</th>
+<th align="center">IFU_dest</th>
+<th align="center">EXT_in</th>
+<th align="center">EXT_op</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">immediate</td>
+<td align="center">Ctrl_EXT_op</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">offset</td>
+<td align="center">Ctrl_EXT_op</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">offset</td>
+<td align="center">Ctrl_EXT_op</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">Ctrl_IFU_br &amp; ALU_A op B</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">offset</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_IFU_j</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">immediate</td>
+<td align="center">Ctrl_EXT_op</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">GRF_A1</th>
+<th align="center">GRF_A2</th>
+<th align="center">GRF_A3</th>
+<th align="center">GRF_WE</th>
+<th align="center">GRF_WD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">rd</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">ALU_A op B</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">rd</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">ALU_A op B</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">rs</td>
+<td align="center">&#x2F;</td>
+<td align="center">rt</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">ALU_A op B</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">base</td>
+<td align="center">&#x2F;</td>
+<td align="center">rt</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">DM_RD</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">base</td>
+<td align="center">rt</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">rs</td>
+<td align="center">rt</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">rt</td>
+<td align="center">Ctrl_GRF_WE</td>
+<td align="center">EXT_32bitOut</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">ALU_A</th>
+<th align="center">ALU_B</th>
+<th align="center">ALU_op</th>
+<th align="center">DM_A</th>
+<th align="center">DM_WE</th>
+<th align="center">DM_WD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">GRF_RD1</td>
+<td align="center">GRF_RD2</td>
+<td align="center">Ctrl_ALU_op</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">GRF_RD1</td>
+<td align="center">GRF_RD2</td>
+<td align="center">Ctrl_ALU_op</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">GRF_RD1</td>
+<td align="center">EXT_32bitOut</td>
+<td align="center">Ctrl_ALU_op</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">GRF_RD1</td>
+<td align="center">EXT_32bitOut</td>
+<td align="center">Ctrl_ALU_op</td>
+<td align="center">ALU_A op B</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">GRF_RD1</td>
+<td align="center">EXT_32bitOut</td>
+<td align="center">Ctrl_ALU_op</td>
+<td align="center">ALU_A op B</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">GRF_RD2</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">GRF_RD1</td>
+<td align="center">GRF_RD2</td>
+<td align="center">Ctrl_ALU_op</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">Ctrl_DM_WE</td>
+<td align="center">&#x2F;</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+</tbody></table>
+<p>注：</p>
+<ul>
+<li><ul>
+<li><p>immediate &#x2F; offset : instr[15,00]</p>
+</li>
+<li><p>rs &#x2F; base : instr[25,21]</p>
+</li>
+<li><p>rt : instr[20,16]</p>
+</li>
+<li><p>rd : instr[15,11]</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-部件说明"><a href="#1-3-部件说明" class="headerlink" title="1.3.部件说明"></a>1.3.部件说明</h3><h4 id="1-3-1-IFU（取指令单元）"><a href="#1-3-1-IFU（取指令单元）" class="headerlink" title="1.3.1.IFU（取指令单元）"></a>1.3.1.IFU（取指令单元）</h4><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">clk</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">时钟信号</td>
+</tr>
+<tr>
+<td align="center">rst</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">异步复位信号</td>
+</tr>
+<tr>
+<td align="center">branch</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">是否需要基于相对地址的跳转</td>
+</tr>
+<tr>
+<td align="center">offset</td>
+<td align="center">In</td>
+<td align="center">16</td>
+<td align="center">相对跳转的偏移量</td>
+</tr>
+<tr>
+<td align="center">jump</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">是否需要基于绝对地址的跳转</td>
+</tr>
+<tr>
+<td align="center">dest</td>
+<td align="center">In</td>
+<td align="center">26</td>
+<td align="center">绝对跳转的目的地址</td>
+</tr>
+<tr>
+<td align="center">instruction</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">当前指令内容</td>
+</tr>
+</tbody></table>
+<h5 id="1-3-1-1-PC（程序计数器）"><a href="#1-3-1-1-PC（程序计数器）" class="headerlink" title="1.3.1.1.PC（程序计数器）"></a>1.3.1.1.PC（程序计数器）</h5><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">NPC</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">输入下一条指令的地址</td>
+</tr>
+<tr>
+<td align="center">clk</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">时钟信号</td>
+</tr>
+<tr>
+<td align="center">rst</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">异步复位信号</td>
+</tr>
+<tr>
+<td align="center">PC</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">输出当前指令的地址</td>
+</tr>
+</tbody></table>
+<ul>
+<li>计数器初始值为0x00003000，实现方法是当寄存器输出为零（复位）时输出初始值。</li>
+<li>地址范围：0x00003000 ~ 0x00006FFF。</li>
+</ul>
+<h5 id="1-3-1-2-NPC（次地址计算单元）"><a href="#1-3-1-2-NPC（次地址计算单元）" class="headerlink" title="1.3.1.2.NPC（次地址计算单元）"></a>1.3.1.2.NPC（次地址计算单元）</h5><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">PC</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">输入当前指令地址</td>
+</tr>
+<tr>
+<td align="center">branch</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">是否需要基于相对地址的跳转</td>
+</tr>
+<tr>
+<td align="center">offset</td>
+<td align="center">In</td>
+<td align="center">16</td>
+<td align="center">相对跳转的偏移量</td>
+</tr>
+<tr>
+<td align="center">jump</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">是否需要基于绝对地址的跳转</td>
+</tr>
+<tr>
+<td align="center">dest</td>
+<td align="center">In</td>
+<td align="center">26</td>
+<td align="center">绝对跳转的目的地址</td>
+</tr>
+<tr>
+<td align="center">NPC</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">输出下一条指令的地址</td>
+</tr>
+</tbody></table>
+<ul>
+<li>现在有三种使用方法，如下表：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">branch</th>
+<th align="center">jump</th>
+<th align="center">NPC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$PC + 4$</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">$PC + 4 + offset \times 4$</td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td align="center">1</td>
+<td align="center">$dest \times 4$</td>
+</tr>
+</tbody></table>
+<h5 id="1-3-1-3-IM（指令存储器）"><a href="#1-3-1-3-IM（指令存储器）" class="headerlink" title="1.3.1.3.IM（指令存储器）"></a>1.3.1.3.IM（指令存储器）</h5><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">PC</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">输入当前指令地址</td>
+</tr>
+<tr>
+<td align="center">instruction</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">当前指令内容</td>
+</tr>
+</tbody></table>
+<ul>
+<li>用 <strong>ROM</strong> 实现指令存储，<strong>ROM</strong> 的 <strong>0</strong> 位置存储的是 <strong>PC</strong> 为 <strong>0x00003000</strong> 的指令，每条指令是一个 32bit 常数。</li>
+</ul>
+<h4 id="1-3-2-GRF（通用寄存器组）"><a href="#1-3-2-GRF（通用寄存器组）" class="headerlink" title="1.3.2.GRF（通用寄存器组）"></a>1.3.2.GRF（通用寄存器组）</h4><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">clk</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">时钟信号</td>
+</tr>
+<tr>
+<td align="center">rst</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">异步复位信号</td>
+</tr>
+<tr>
+<td align="center">WE</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">写使能信号</td>
+</tr>
+<tr>
+<td align="center">A1</td>
+<td align="center">In</td>
+<td align="center">5</td>
+<td align="center">指定一个寄存器，将其中存储的数据输出到RD1</td>
+</tr>
+<tr>
+<td align="center">A2</td>
+<td align="center">In</td>
+<td align="center">5</td>
+<td align="center">指定一个寄存器，将其中存储的数据输出到RD2</td>
+</tr>
+<tr>
+<td align="center">A3</td>
+<td align="center">In</td>
+<td align="center">5</td>
+<td align="center">指定一个寄存器，存储WD输入的数据</td>
+</tr>
+<tr>
+<td align="center">WD</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">数据输入</td>
+</tr>
+<tr>
+<td align="center">RD1</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">数据输出1</td>
+</tr>
+<tr>
+<td align="center">RD2</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">数据输出2</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>包含32个寄存器（0到31号），具有<strong>异步复位</strong>功能。</p>
+</li>
+<li><p><strong>0 号寄存器</strong>的值始终保持为 0。其他寄存器<strong>初始值（复位后）均为 0</strong>。</p>
+</li>
+</ul>
+<h4 id="1-3-3-ALU（算术逻辑单元）"><a href="#1-3-3-ALU（算术逻辑单元）" class="headerlink" title="1.3.3.ALU（算术逻辑单元）"></a>1.3.3.ALU（算术逻辑单元）</h4><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">A</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">运算数1</td>
+</tr>
+<tr>
+<td align="center">B</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">运算数2</td>
+</tr>
+<tr>
+<td align="center">op</td>
+<td align="center">In</td>
+<td align="center">3</td>
+<td align="center">运算符选择</td>
+</tr>
+<tr>
+<td align="center">A op B</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">运算结果</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>功能说明：</p>
+<table>
+<thead>
+<tr>
+<th align="center">功能名称</th>
+<th align="center">op</th>
+<th align="center">输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">加（无符号运算，不考虑溢出）</td>
+<td align="center">000</td>
+<td align="center">$A + B [31,0]$</td>
+</tr>
+<tr>
+<td align="center">减（无符号运算，不考虑溢出）</td>
+<td align="center">001</td>
+<td align="center">$A - B [31,0]$</td>
+</tr>
+<tr>
+<td align="center">按位或</td>
+<td align="center">010</td>
+<td align="center">$A | B$</td>
+</tr>
+<tr>
+<td align="center">是否大于</td>
+<td align="center">011</td>
+<td align="center">$A &gt; B$</td>
+</tr>
+<tr>
+<td align="center">是否相等</td>
+<td align="center">100</td>
+<td align="center">$A &#x3D;&#x3D; B$</td>
+</tr>
+<tr>
+<td align="center">是否小于</td>
+<td align="center">101</td>
+<td align="center">$A &lt; B$</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h4 id="1-3-4-DM（数据存储器）"><a href="#1-3-4-DM（数据存储器）" class="headerlink" title="1.3.4.DM（数据存储器）"></a>1.3.4.DM（数据存储器）</h4><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">clk</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">时钟信号</td>
+</tr>
+<tr>
+<td align="center">rst</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">异步复位信号</td>
+</tr>
+<tr>
+<td align="center">A</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">输入存取数据的地址</td>
+</tr>
+<tr>
+<td align="center">WE</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">写使能信号</td>
+</tr>
+<tr>
+<td align="center">WD</td>
+<td align="center">In</td>
+<td align="center">32</td>
+<td align="center">数据输入</td>
+</tr>
+<tr>
+<td align="center">RD</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">数据输出</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>起始地址：0x00000000</strong>。</li>
+<li>地址范围：0x00000000 ~ 0x00002FFF。</li>
+</ul>
+<h4 id="1-3-5-EXT（扩展单元）"><a href="#1-3-5-EXT（扩展单元）" class="headerlink" title="1.3.5.EXT（扩展单元）"></a>1.3.5.EXT（扩展单元）</h4><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">16bitIn</td>
+<td align="center">In</td>
+<td align="center">16</td>
+<td align="center">待扩展的16位数据</td>
+</tr>
+<tr>
+<td align="center">operation</td>
+<td align="center">In</td>
+<td align="center">2</td>
+<td align="center">指示扩展方法</td>
+</tr>
+<tr>
+<td align="center">32bitOut</td>
+<td align="center">Out</td>
+<td align="center">32</td>
+<td align="center">扩展后的32位数据</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>功能说明：</p>
+<table>
+<thead>
+<tr>
+<th align="center">功能名称</th>
+<th align="center">operation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">零拓展</td>
+<td align="center">00</td>
+</tr>
+<tr>
+<td align="center">符号拓展</td>
+<td align="center">01</td>
+</tr>
+<tr>
+<td align="center">将数据加载至高16位</td>
+<td align="center">10</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h4 id="1-3-6-Controller（控制器）"><a href="#1-3-6-Controller（控制器）" class="headerlink" title="1.3.6.Controller（控制器）"></a>1.3.6.Controller（控制器）</h4><h5 id="1-3-6-1-AND-logic（与逻辑，识别）"><a href="#1-3-6-1-AND-logic（与逻辑，识别）" class="headerlink" title="1.3.6.1.AND_logic（与逻辑，识别）"></a>1.3.6.1.AND_logic（与逻辑，识别）</h5><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">opcode</td>
+<td align="center">In</td>
+<td align="center">6</td>
+<td align="center">操作码，用于标识指令的功能</td>
+</tr>
+<tr>
+<td align="center">func</td>
+<td align="center">In</td>
+<td align="center">6</td>
+<td align="center">用于辅助 op 来识别指令</td>
+</tr>
+<tr>
+<td align="center">add</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是add</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是sub</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是ori</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是lw</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是sw</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是beq</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是lui</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">Out</td>
+<td align="center">1</td>
+<td align="center">判断本条指令是nop</td>
+</tr>
+</tbody></table>
+<ul>
+<li>将输入的机器码识别为相应的指令。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">opcode([31,26])</th>
+<th align="center">func([5:0])</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">000000</td>
+<td align="center">100000</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">000000</td>
+<td align="center">100010</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">001101</td>
+<td align="center">xxxxxx</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">100011</td>
+<td align="center">xxxxxx</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">101011</td>
+<td align="center">xxxxxx</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">000100</td>
+<td align="center">xxxxxx</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">001111</td>
+<td align="center">xxxxxx</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">000000</td>
+<td align="center">000000</td>
+</tr>
+</tbody></table>
+<h5 id="1-3-6-2-OR-logic（或逻辑，生成）"><a href="#1-3-6-2-OR-logic（或逻辑，生成）" class="headerlink" title="1.3.6.2.OR_logic（或逻辑，生成）"></a>1.3.6.2.OR_logic（或逻辑，生成）</h5><table>
+<thead>
+<tr>
+<th align="center">端口名称</th>
+<th align="center">方向</th>
+<th align="center">位宽</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是add</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是sub</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是ori</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是lw</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是sw</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是beq</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是lui</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">In</td>
+<td align="center">1</td>
+<td align="center">本条指令是nop</td>
+</tr>
+<tr>
+<td align="center">IFU_br</td>
+<td align="center">out</td>
+<td align="center">1</td>
+<td align="center">是否需要相对跳转</td>
+</tr>
+<tr>
+<td align="center">IFU_j</td>
+<td align="center">out</td>
+<td align="center">1</td>
+<td align="center">是否需要绝对跳转</td>
+</tr>
+<tr>
+<td align="center">GRF_A3_slt</td>
+<td align="center">out</td>
+<td align="center">1</td>
+<td align="center">选择被写入的寄存器</td>
+</tr>
+<tr>
+<td align="center">GRF_WE</td>
+<td align="center">out</td>
+<td align="center">1</td>
+<td align="center">是否需要将数据写入寄存器</td>
+</tr>
+<tr>
+<td align="center">GRF_WD_slt</td>
+<td align="center">out</td>
+<td align="center">2</td>
+<td align="center">选择写入寄存器的数据</td>
+</tr>
+<tr>
+<td align="center">ALU_B_slt</td>
+<td align="center">out</td>
+<td align="center">1</td>
+<td align="center">选择ALU的第二个操作数</td>
+</tr>
+<tr>
+<td align="center">ALU_op</td>
+<td align="center">out</td>
+<td align="center">3</td>
+<td align="center">当前ALU需要运算的模式</td>
+</tr>
+<tr>
+<td align="center">DM_WE</td>
+<td align="center">out</td>
+<td align="center">1</td>
+<td align="center">数据存储器是否需要写入数据</td>
+</tr>
+<tr>
+<td align="center">EXT_op</td>
+<td align="center">out</td>
+<td align="center">2</td>
+<td align="center">当前EXT需要拓展的模式</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>根据输入的指令的不同，产生不同的控制信号。</p>
+</li>
+<li><p>注释</p>
+<ul>
+<li><p>GRF_A3_slt : 0 - rd; 1 - rt.</p>
+</li>
+<li><p>GRF_WD_slt : 00 - ALU_A op B; 01 - DM_RD; 10 : EXT_32bitOut.</p>
+</li>
+<li><p>ALU_B_slt : 0 - GRF_RD2; 1 - EXT_32bitOut.</p>
+</li>
+<li><p>ALU_op, EXT_op : 见部件说明的相关部分</p>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="OR-logic真值表-本表仅涉及有多种可能的信号。"><a href="#OR-logic真值表-本表仅涉及有多种可能的信号。" class="headerlink" title="OR_logic真值表(本表仅涉及有多种可能的信号。)"></a>OR_logic真值表(本表仅涉及有多种可能的信号。)</h6><table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">IFU_br</th>
+<th align="center">IFU_j</th>
+<th align="center">GRF_A3_slt</th>
+<th align="center">GRF_WE</th>
+<th align="center">GRF_WD_slt</th>
+<th align="center">ALU_B_slt</th>
+<th align="center">ALU_op</th>
+<th align="center">DM_WE</th>
+<th align="center">EXT_op</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">00</td>
+<td align="center">0</td>
+<td align="center">000</td>
+<td align="center">0</td>
+<td align="center">xx</td>
+</tr>
+<tr>
+<td align="center">sub</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">00</td>
+<td align="center">0</td>
+<td align="center">001</td>
+<td align="center">0</td>
+<td align="center">xx</td>
+</tr>
+<tr>
+<td align="center">ori</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">00</td>
+<td align="center">1</td>
+<td align="center">010</td>
+<td align="center">0</td>
+<td align="center">00</td>
+</tr>
+<tr>
+<td align="center">lw</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">01</td>
+<td align="center">1</td>
+<td align="center">000</td>
+<td align="center">0</td>
+<td align="center">01</td>
+</tr>
+<tr>
+<td align="center">sw</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">x</td>
+<td align="center">0</td>
+<td align="center">xx</td>
+<td align="center">1</td>
+<td align="center">000</td>
+<td align="center">1</td>
+<td align="center">01</td>
+</tr>
+<tr>
+<td align="center">beq</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">x</td>
+<td align="center">0</td>
+<td align="center">xx</td>
+<td align="center">0</td>
+<td align="center">100</td>
+<td align="center">0</td>
+<td align="center">xx</td>
+</tr>
+<tr>
+<td align="center">lui</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">10</td>
+<td align="center">x</td>
+<td align="center">xxx</td>
+<td align="center">0</td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td align="center">nop</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+<td align="center">&#x2F;</td>
+</tr>
+</tbody></table>
+<h2 id="2-测试方案"><a href="#2-测试方案" class="headerlink" title="2.测试方案"></a>2.测试方案</h2><p>考虑各种情况，编写测试数据（如下），用Mars汇编为机器码导入CPU并进行对拍</p>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ori &amp; lui    </span></span><br><span class="line"><span class="comment"># 考虑原本有值的寄存器、没有值的寄存器、恒为零的$0，以及立即数的正、负、零</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t0</span> $<span class="built_in">zero</span> <span class="number">0x0000</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t1</span> $<span class="built_in">t0</span> <span class="number">0x1111</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t2</span> $<span class="built_in">t1</span> <span class="number">0x4444</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t3</span> $<span class="built_in">t2</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t4</span> $<span class="built_in">t3</span> <span class="number">0xffff</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">zero</span> $<span class="built_in">t4</span> <span class="number">0x2341</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t4</span> <span class="number">0xffff</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t3</span> <span class="number">0x2233</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t2</span> <span class="number">0x0000</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t9</span> <span class="number">0x4567</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">zero</span> <span class="number">0xffff</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add &amp; sub        </span></span><br><span class="line"><span class="comment"># 考虑相同寄存器之间、不同寄存器之间；正数、负数、零之间的加减</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t0</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t1</span> $<span class="built_in">t0</span> $<span class="built_in">t0</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t2</span> <span class="number">0x4321</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t3</span> $<span class="built_in">t1</span> $<span class="built_in">t2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t4</span> <span class="number">0xfeda</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t4</span> $<span class="built_in">t4</span> <span class="number">0x5678</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t5</span> $<span class="built_in">t4</span> $<span class="built_in">t3</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t6</span> $<span class="built_in">t5</span> $<span class="built_in">t4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t7</span> <span class="number">0x7777</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t7</span> $<span class="built_in">t7</span> <span class="number">0xffff</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t8</span> $<span class="built_in">t7</span> $<span class="built_in">t6</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t9</span> $<span class="built_in">t7</span> $<span class="built_in">t3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t0</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t1</span> $<span class="built_in">t0</span> $<span class="built_in">t0</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t2</span> <span class="number">0x4321</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t3</span> $<span class="built_in">t1</span> $<span class="built_in">t2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t4</span> <span class="number">0xfeda</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t4</span> $<span class="built_in">t4</span> <span class="number">0x5678</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t5</span> $<span class="built_in">t4</span> $<span class="built_in">t3</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t6</span> $<span class="built_in">t5</span> $<span class="built_in">t4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t7</span> <span class="number">0x7777</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t7</span> $<span class="built_in">t7</span> <span class="number">0xffff</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t8</span> $<span class="built_in">t7</span> $<span class="built_in">t6</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t9</span> $<span class="built_in">t7</span> $<span class="built_in">t3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># lw &amp; sw    </span></span><br><span class="line"><span class="comment"># 考虑base、offset分别的正负零情形，但是总体上加和需要保证大于等于零</span></span><br><span class="line"><span class="comment"># 考虑写入时目标地址不为0的情形和读取时目标寄存器为$0的情形</span></span><br><span class="line">    <span class="comment"># base == 0 &amp;&amp; offset &gt;= 0</span></span><br><span class="line">    <span class="comment"># the target register maybe $0</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">s0</span> <span class="number">0xafdc</span>    </span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s0</span> $<span class="built_in">s0</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0000</span>($<span class="built_in">zero</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0010</span>($<span class="built_in">zero</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0110</span>($<span class="built_in">zero</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t0</span> <span class="number">0x0000</span>($<span class="built_in">zero</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t1</span> <span class="number">0x0010</span>($<span class="built_in">zero</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t2</span> <span class="number">0x0110</span>($<span class="built_in">zero</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">zero</span> <span class="number">0x0000</span>($<span class="built_in">zero</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># base &lt; 0 &amp;&amp; offset &gt; 0</span></span><br><span class="line">    <span class="comment"># the place to store maybe already occupied</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">s0</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s0</span> $<span class="built_in">s0</span> <span class="number">0xafdc</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t0</span> $<span class="built_in">zero</span> <span class="number">0x0010</span></span><br><span class="line">    <span class="keyword">sub </span>$<span class="built_in">t0</span> $<span class="built_in">zero</span> $<span class="built_in">t0</span></span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0010</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0110</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t1</span> <span class="number">0x0010</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t2</span> <span class="number">0x0110</span>($<span class="built_in">t0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># base &gt; 0</span></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">s0</span> <span class="number">0x0066</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s0</span> $<span class="built_in">s0</span> <span class="number">0xccff</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">t0</span> $<span class="built_in">zero</span> <span class="number">0x0100</span></span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0000</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> -<span class="number">0x0004</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> -<span class="number">0x0100</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0004</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">sw </span>$<span class="built_in">s0</span> <span class="number">0x0100</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t1</span> <span class="number">0x0000</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t2</span> -<span class="number">0x0004</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t3</span> -<span class="number">0x0100</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t4</span> <span class="number">0x0004</span>($<span class="built_in">t0</span>)</span><br><span class="line">    <span class="keyword">lw </span>$<span class="built_in">t5</span> <span class="number">0x0100</span>($<span class="built_in">t0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># beq (&amp; nop)</span></span><br><span class="line"><span class="comment"># 考虑是否需要跳转和offset的正负零情况</span></span><br><span class="line"><span class="comment"># 这段代码最后会卡在跳转到自身的指令不再向下进行</span></span><br><span class="line"><span class="symbol">    label0:</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s0</span> $<span class="built_in">s0</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s1</span> $<span class="built_in">s1</span> <span class="number">0x5678</span></span><br><span class="line"><span class="symbol">    label1:</span></span><br><span class="line">    <span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> label1</span><br><span class="line">    <span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> label2</span><br><span class="line">    <span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> label0</span><br><span class="line"><span class="symbol">    label2:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">lui </span>$<span class="built_in">t0</span> <span class="number">0x0000</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s0</span> $<span class="built_in">zero</span> <span class="number">0x1234</span></span><br><span class="line">    <span class="keyword">ori </span>$<span class="built_in">s1</span> $<span class="built_in">zero</span> <span class="number">0x1234</span></span><br><span class="line"><span class="symbol">    label3:</span></span><br><span class="line">    <span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span>    <span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span>    <span class="keyword">beq </span>$<span class="built_in">t0</span> $<span class="built_in">zero</span> label4</span><br><span class="line"><span class="symbol">    label5:</span></span><br><span class="line">    <span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> label5</span><br><span class="line">    <span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span>    <span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="symbol">    label4:</span></span><br><span class="line">    <span class="keyword">add </span>$<span class="built_in">t0</span> $<span class="built_in">t0</span> $<span class="built_in">s0</span></span><br><span class="line">    <span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> label3</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-思考题"><a href="#3-思考题" class="headerlink" title="3.思考题"></a>3.思考题</h2><ol>
+<li><p><strong>上面我们介绍了通过 FSM 理解单周期 CPU 的基本方法。请大家指出单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能。</strong></p>
+<p>PC和GRF，DM发挥状态存储功能，NPC和controller，ALU，EXT发挥状态转移功能</p>
+<p>如果以指令为界将整个CPU分为“上游”和“下游”两个FSM，则 <strong>“上游”</strong> 的摩尔型状态机<strong>输入</strong>是否需要跳转（相对或绝对）和跳转的偏移量或目的地址，以PC为<strong>状态存储</strong>模块，NPC根据输入进行<strong>状态转移</strong>计算下一条指令地址，而IM则根据当前状态（PC中储存的地址）<strong>输出</strong>对应的指令；而 <strong>“下游”</strong> 的状态机则是<strong>输入</strong>当前的指令（经过splitter分解），然后根据controller的解析，利用ALU和EXT对GRF和DM中存储的数据进行读写，这个过程中，可以认为GRF和DM是<strong>状态存储</strong>模块，而controller，ALU，EXT共同构成<strong>状态转移</strong>模块，最终<strong>输出</strong>即是“上游”状态机的输入（实际上main模块的输出是这个过程中的部分信号，不同于状态机的输出）。</p>
+</li>
+<li><p><strong>现在我们的模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出。</strong></p>
+<p>比较合理。首先，IM是存储指令，常规条件下只需要在开始运行之前加载一次数据即可，而不需要在运行过程中反复读写，因此可以用只读的ROM实现；DM存储数据，需要在运行过程中反复读写，每个周期至多进行一次读或写操作，且需要实现异步复位，另外其需要的空间也比较大，因此用RAM实现比较合理；GRF需要在运行过程中频繁读写，需要较快的速度但不需要太大的空间，因此用Register最合理。</p>
+<p>如果需要改进，可以考虑将IM与DM合并为一个RAM，分别从下往上、从上往下使用空间，这样可以在硬件一定的情况下兼顾更多种可能，如指令较少而需要存储的数据较多、存储数据较少而指令较多等情况，最大化空间利用率。但是如果这样做</p>
+</li>
+<li><p><strong>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路。</strong></p>
+<p>暂时还没有，只是对上述模块进行了组合连接，并未新创建模块。</p>
+</li>
+<li><p><strong>事实上，实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</strong></p>
+<p>因为nop的机器码为32位0，对于所有的数据存储模块（包括GRF和DM），其“写使能”端口输入值必然为0，因此不会发生任何数据的存储，故不会对后续代码的运行产生影响。所以控制模块其实不需要做专门的处理，把全0作为一种default情况即可。</p>
+</li>
+<li><p><strong>阅读 Pre 的 <a target="_blank" rel="noopener" href="http://cscore.buaa.edu.cn/tutorial/mips/mips-6/mips6-1/">“MIPS 指令集及汇编语言”</a> 一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</strong></p>
+<p>强度不够高，虽然比较全面地考虑了CPU需要实现的各个指令，但是仍有不足：</p>
+<p>①没有覆盖到sub指令，最好对sub指令的正正、负负、正负、负正情况分别测试（还有比较边缘的数值情况）</p>
+<p>②ori的立即数没有达到16位的最大限度附近</p>
+<p>③beq指令只测试了向后跳转而没有涉及向前跳转（和原地跳转）</p>
+<p>④对于所有内存操作的base寄存器，用的都是$t0寄存器，且其值始终为0</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CO-P3/" rel="tag"># CO_P3</a>
+          </div>
+
+        
+
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Mr.Banana</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">3k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
